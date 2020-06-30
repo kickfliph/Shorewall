@@ -17,12 +17,13 @@ elif [[ -e /etc/debian_version ]]; then
 elif [[ -e /etc/centos-release ]]; then
 	os="centos"
 	os_version=$(grep -oE '[0-9]+' /etc/centos-release | head -1)
-    yum install gcc gcc-c++ kernel-devel make wget git -y
+    yum install gcc gcc-c++ kernel-devel make wget git perl-Digest-SHA.x86_64.rpm -y
     cd /root
+
     wget http://www.invoca.ch/pub/packages/shorewall/RPMS/ils-8/noarch/shorewall-5.2.5.2-1.el8.noarch.rpm
     rpm -qpR shorewall-5.2.5.2-1.el8.noarch.rpm
     rpm -i shorewall-5.2.5.2-1.el8.noarch.rpm
-
+    
 elif [[ -e /etc/fedora-release ]]; then
 	os="fedora"
 	os_version=$(grep -oE '[0-9]+' /etc/fedora-release | head -1)
