@@ -26,14 +26,20 @@ elif [[ -e /etc/centos-release ]]; then
 elif [[ -e /etc/fedora-release ]]; then
 	os="fedora"
 	os_version=$(grep -oE '[0-9]+' /etc/fedora-release | head -1)
-	yum install gcc gcc-c++ kernel-devel make
-    yum install gcc gcc-c++ kernel-devel make wget git -y
+    yum install gcc gcc-c++ kernel-devel make wget git perl-Digest-SHA.x86_64 -y
     cd /root
+
+    wget http://www.invoca.ch/pub/packages/shorewall/RPMS/ils-8/noarch/shorewall-core-5.2.5.2-1.el8.noarch.rpm
     wget http://www.invoca.ch/pub/packages/shorewall/RPMS/ils-8/noarch/shorewall-5.2.5.2-1.el8.noarch.rpm
-    rpm -qpR shorewall-5.2.5.2-1.el8.noarch.rpm
+    rpm -i shorewall-core-5.2.5.2-1.el8.noarch.rpm
     rpm -i shorewall-5.2.5.2-1.el8.noarch.rpm
 else
 	echo "This installer seems to be running on an unsupported distribution.
 Supported distributions are Ubuntu, Debian, CentOS, and Fedora."
 	exit
 fi
+
+cp /usr/share/doc/shorewall/Samples/two-interfaces/{interfaces,params,policy,shorewall.conf,snat,stoppedrules,rules,zones} /etc/shorewall/
+sed -i 's|STARTUP_ENABLED=No|STARTUP_ENABLED=Yes|g' /etc/shorewall/shorewall.conf
+shorewall check
+/etc/init.d/shorewall start
