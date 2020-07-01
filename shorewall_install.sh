@@ -42,4 +42,4 @@ fi
 cp /usr/share/doc/shorewall/Samples/two-interfaces/{interfaces,params,policy,shorewall.conf,snat,stoppedrules,rules,zones} /etc/shorewall/
 sed -i 's|STARTUP_ENABLED=No|STARTUP_ENABLED=Yes|g' /etc/shorewall/shorewall.conf
 shorewall check
-/etc/init.d/shorewall start
+systemctl start shorewall
